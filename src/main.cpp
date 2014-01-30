@@ -50,7 +50,7 @@ map<uint256, map<uint256, CDataStream*> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "SmallChange Signed Message:\n";
+const string strMessageMagic = "OlimpCoin Signed Message:\n";
 
 double dHashesPerSec;
 int64 nHPSTimerStart;
@@ -828,7 +828,7 @@ uint256 static GetOrphanRoot(const CBlock* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 4 * COIN;
+    int64 nSubsidy = 2014 * COIN;
 
 
     if(nHeight < 17280) // no block reward within the first 3 days
@@ -839,13 +839,11 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 0.35 * 24 * 60 * 60; // SmallChange: 0.35 days
-static const int64 nTargetSpacing = 15; // SmallChange: 15 seconds
+static const int64 nTargetTimespan = 1.4 * 24 * 60 * 60; // OlimpCoin: 1.4 days
+static const int64 nTargetSpacing = 144; // OlimpCoin: 144 seconds
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
-// Thanks: Balthazar for suggesting the following fix
-// https://bitcointalk.org/index.php?topic=182430.msg1904506#msg1904506
-static const int64 nReTargetHistoryFact = 4; // look at 4 times the retarget
+// look at 4 times the retarget
                                              // interval into the block history
 
 //
@@ -1184,7 +1182,7 @@ bool CTransaction::ConnectInputs(MapPrevTx inputs,
 {
     // Take over previous transactions' spent pointers
     // fBlock is true when this is called from AcceptBlock when a new best-block is added to the blockchain
-    // fMiner is true when called from the internal smallchange miner
+    // fMiner is true when called from the internal OlimpCoin miner
     // ... both are false when called from CTransaction::AcceptToMemoryPool
     if (!IsCoinBase())
     {
@@ -1931,7 +1929,7 @@ bool CheckDiskSpace(uint64 nAdditionalBytes)
         string strMessage = _("Warning: Disk space is low");
         strMiscWarning = strMessage;
         printf("*** %s\n", strMessage.c_str());
-        uiInterface.ThreadSafeMessageBox(strMessage, "SmallChange", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
+        uiInterface.ThreadSafeMessageBox(strMessage, "OlimpCoin", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
         StartShutdown();
         return false;
     }
@@ -2007,19 +2005,19 @@ bool LoadBlockIndex(bool fAllowNew)
             return false;
     
 	// Genesis block:
-	// block.nTime = 1366559428 
+	// block.nTime = 1300000000 
 	// block.nNonce = 2085386442 
 	// block.GetHash = 384b060671f4a93948e9c168216dadb0ca2fbc54aa11c86b0345b6af1c59b2f5
 	// CBlock(hash=384b060671f4a93948e9, PoW=00000951e146b0026411, ver=1,
 	//  hashPrevBlock=00000000000000000000, hashMerkleRoot=5a2e19825b,
-	//  nTime=1366559428, nBits=1e0ffff0, nNonce=2085386442, vtx=1)
+	//  nTime=1300000000, nBits=1e0ffff0, nNonce=2085386442, vtx=1)
 	// CTransaction(hash=5a2e19825b, ver=1, vin.size=1, vout.size=1, nLockTime=0)
 	// CTxIn(COutPoint(0000000000, -1), coinbase 04ffff001d010441746f646f3a207265706c616365207769746820736f6d657468696e67207468617420656e7375726573206e6f207072656d696e696e6720746f6f6b20706c616365)
 	// CTxOut(error)
 	// vMerkleTree: 5a2e19825b
         
         // Genesis block
-        const char* pszTimestamp = "todo: replace with something that ensures no premining took place";
+        const char* pszTimestamp = "Traditionally one puts something timely here coinciding with the epoch";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
